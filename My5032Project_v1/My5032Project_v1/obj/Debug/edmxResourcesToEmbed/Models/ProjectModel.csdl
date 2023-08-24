@@ -1,0 +1,150 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ProjectDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Appointment">
+    <Key>
+      <PropertyRef Name="AppointmentID" />
+    </Key>
+    <Property Name="AppointmentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PatientID" Type="Int32" />
+    <Property Name="StaffID" Type="Int32" />
+    <Property Name="DateOfAppointment" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="TimeSlot" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="FeedbackRating" Type="Int32" />
+    <Property Name="FeedbackComment" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="User" Relationship="Self.FK__Appointme__Patie__3B75D760" FromRole="Appointments" ToRole="Users" />
+    <NavigationProperty Name="User1" Relationship="Self.FK__Appointme__Staff__3C69FB99" FromRole="Appointments" ToRole="Users" />
+    <NavigationProperty Name="XRayRecords" Relationship="Self.FK__XRayRecor__Appoi__412EB0B6" FromRole="Appointments" ToRole="XRayRecords" />
+  </EntityType>
+  <EntityType Name="BulkEmail">
+    <Key>
+      <PropertyRef Name="EmailID" />
+    </Key>
+    <Property Name="EmailID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Subject" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Body" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="DateSent" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="Users" Relationship="Self.EmailRecipients" FromRole="BulkEmails" ToRole="Users" />
+  </EntityType>
+  <EntityType Name="Notification">
+    <Key>
+      <PropertyRef Name="NotificationID" />
+    </Key>
+    <Property Name="NotificationID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="RecipientUserID" Type="Int32" />
+    <Property Name="MessageContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="DateSent" Type="DateTime" Precision="3" />
+    <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Attachment" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <NavigationProperty Name="User" Relationship="Self.FK__Notificat__Recip__440B1D61" FromRole="Notifications" ToRole="Users" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="UserID" />
+    </Key>
+    <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="FirstName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="LastName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Email" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Password" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Role" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="DateRegistered" Type="DateTime" Precision="3" />
+    <Property Name="ProfilePicture" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <Property Name="ContactNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Appointments" Relationship="Self.FK__Appointme__Patie__3B75D760" FromRole="Users" ToRole="Appointments" />
+    <NavigationProperty Name="Appointments1" Relationship="Self.FK__Appointme__Staff__3C69FB99" FromRole="Users" ToRole="Appointments" />
+    <NavigationProperty Name="Notifications" Relationship="Self.FK__Notificat__Recip__440B1D61" FromRole="Users" ToRole="Notifications" />
+    <NavigationProperty Name="BulkEmails" Relationship="Self.EmailRecipients" FromRole="Users" ToRole="BulkEmails" />
+  </EntityType>
+  <EntityType Name="XRayRecord">
+    <Key>
+      <PropertyRef Name="RecordID" />
+    </Key>
+    <Property Name="RecordID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="AppointmentID" Type="Int32" />
+    <Property Name="XRayImage" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
+    <Property Name="DateTaken" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Diagnosis" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Appointment" Relationship="Self.FK__XRayRecor__Appoi__412EB0B6" FromRole="XRayRecords" ToRole="Appointments" />
+  </EntityType>
+  <Association Name="FK__Appointme__Patie__3B75D760">
+    <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+    <End Role="Appointments" Type="Self.Appointment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="Appointments">
+        <PropertyRef Name="PatientID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Appointme__Staff__3C69FB99">
+    <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+    <End Role="Appointments" Type="Self.Appointment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="Appointments">
+        <PropertyRef Name="StaffID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__XRayRecor__Appoi__412EB0B6">
+    <End Role="Appointments" Type="Self.Appointment" Multiplicity="0..1" />
+    <End Role="XRayRecords" Type="Self.XRayRecord" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Appointments">
+        <PropertyRef Name="AppointmentID" />
+      </Principal>
+      <Dependent Role="XRayRecords">
+        <PropertyRef Name="AppointmentID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Notificat__Recip__440B1D61">
+    <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+    <End Role="Notifications" Type="Self.Notification" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="Notifications">
+        <PropertyRef Name="RecipientUserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="EmailRecipients">
+    <End Role="BulkEmails" Type="Self.BulkEmail" Multiplicity="*" />
+    <End Role="Users" Type="Self.User" Multiplicity="*" />
+  </Association>
+  <EntityContainer Name="ProjectDBEntities1" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Appointments" EntityType="Self.Appointment" />
+    <EntitySet Name="BulkEmails" EntityType="Self.BulkEmail" />
+    <EntitySet Name="Notifications" EntityType="Self.Notification" />
+    <EntitySet Name="Users" EntityType="Self.User" />
+    <EntitySet Name="XRayRecords" EntityType="Self.XRayRecord" />
+    <AssociationSet Name="FK__Appointme__Patie__3B75D760" Association="Self.FK__Appointme__Patie__3B75D760">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Appointments" EntitySet="Appointments" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Appointme__Staff__3C69FB99" Association="Self.FK__Appointme__Staff__3C69FB99">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Appointments" EntitySet="Appointments" />
+    </AssociationSet>
+    <AssociationSet Name="FK__XRayRecor__Appoi__412EB0B6" Association="Self.FK__XRayRecor__Appoi__412EB0B6">
+      <End Role="Appointments" EntitySet="Appointments" />
+      <End Role="XRayRecords" EntitySet="XRayRecords" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Notificat__Recip__440B1D61" Association="Self.FK__Notificat__Recip__440B1D61">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Notifications" EntitySet="Notifications" />
+    </AssociationSet>
+    <AssociationSet Name="EmailRecipients" Association="Self.EmailRecipients">
+      <End Role="BulkEmails" EntitySet="BulkEmails" />
+      <End Role="Users" EntitySet="Users" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

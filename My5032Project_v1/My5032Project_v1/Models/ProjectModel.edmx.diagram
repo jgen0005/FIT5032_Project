@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="494f6863b4694427b6f7a5d4373b083c" Name="Diagram1">
+        <EntityTypeShape EntityType="ProjectDBModel.Appointment" Width="1.5" PointX="5.25" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProjectDBModel.BulkEmail" Width="1.5" PointX="0.75" PointY="3.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProjectDBModel.Notification" Width="1.5" PointX="5.25" PointY="4.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProjectDBModel.User" Width="1.5" PointX="3" PointY="2.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProjectDBModel.XRayRecord" Width="1.5" PointX="7.5" PointY="1.5" IsExpanded="true" />
+        <AssociationConnector Association="ProjectDBModel.FK__Appointme__Patie__3B75D760" ManuallyRouted="false" />
+        <AssociationConnector Association="ProjectDBModel.FK__Appointme__Staff__3C69FB99" ManuallyRouted="false" />
+        <AssociationConnector Association="ProjectDBModel.FK__XRayRecor__Appoi__412EB0B6" ManuallyRouted="false" />
+        <AssociationConnector Association="ProjectDBModel.FK__Notificat__Recip__440B1D61" ManuallyRouted="false" />
+        <AssociationConnector Association="ProjectDBModel.EmailRecipients" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
