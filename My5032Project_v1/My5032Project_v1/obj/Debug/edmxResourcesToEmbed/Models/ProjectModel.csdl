@@ -120,7 +120,7 @@
     <End Role="BulkEmails" Type="Self.BulkEmail" Multiplicity="*" />
     <End Role="Users" Type="Self.User" Multiplicity="*" />
   </Association>
-  <EntityContainer Name="ProjectDBEntities1" annotation:LazyLoadingEnabled="true">
+  <EntityContainer Name="ProjectDBEntities2" annotation:LazyLoadingEnabled="true">
     <EntitySet Name="Appointments" EntityType="Self.Appointment" />
     <EntitySet Name="BulkEmails" EntityType="Self.BulkEmail" />
     <EntitySet Name="Notifications" EntityType="Self.Notification" />

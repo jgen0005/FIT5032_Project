@@ -1,0 +1,75 @@
+﻿@model project_v2.Models.Appointment
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Appointment</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.PatientID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PatientID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.StaffID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.StaffID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateOfAppointment)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateOfAppointment)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TimeSlot)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TimeSlot)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FeedbackRating)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FeedbackRating)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FeedbackComment)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FeedbackComment)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.AppointmentID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

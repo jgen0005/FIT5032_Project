@@ -1,0 +1,70 @@
+﻿@model IEnumerable<project_v2.Models.Appointment>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.PatientID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.StaffID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateOfAppointment)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TimeSlot)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Status)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FeedbackRating)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FeedbackComment)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.PatientID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.StaffID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateOfAppointment)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TimeSlot)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Status)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FeedbackRating)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FeedbackComment)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.AppointmentID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.AppointmentID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.AppointmentID })
+        </td>
+    </tr>
+}
+
+</table>
