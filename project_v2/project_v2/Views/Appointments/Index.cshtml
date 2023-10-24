@@ -11,60 +11,79 @@
     @Html.ActionLink("Create New", "Create")
 </p>
 <table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.PatientID)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.StaffID)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DateOfAppointment)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.TimeSlot)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Status)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.FeedbackRating)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.FeedbackComment)
-        </th>
-        <th></th>
-    </tr>
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.PatientID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StaffID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateOfAppointment)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TimeSlot)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FeedbackRating)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FeedbackComment)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.PatientID)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.StaffID)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DateOfAppointment)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TimeSlot)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Status)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.FeedbackRating)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.FeedbackComment)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.AppointmentID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.AppointmentID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.AppointmentID })
-        </td>
-    </tr>
-}
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PatientID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StaffID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateOfAppointment)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TimeSlot)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FeedbackRating)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FeedbackComment)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.AppointmentID }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.AppointmentID }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.AppointmentID })
+                </td>
+            </tr>
+        }
+    </tbody>
 
 </table>
+
+@section Scripts {
+
+    @Scripts.Render("~/Scripts/DataTables/jquery.dataTables.js")
+    @Scripts.Render("~/Scripts/DataTables/dataTables.bootstrap.js")
+    <script>
+         $(document).ready(function () {
+         $('.table').DataTable();
+         });
+    </script>
+}
+<link href="~/Content/DataTables/css/dataTables.bootstrap.min.css"
+      rel="stylesheet" />

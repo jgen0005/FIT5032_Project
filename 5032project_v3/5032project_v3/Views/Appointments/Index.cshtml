@@ -1,0 +1,177 @@
+﻿@model IEnumerable<_5032project_v3.Models.AppointmentViewModel>
+
+@{
+    ViewBag.Title = "Your Appointments";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/DataTables/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+
+<style>
+    .cancel-link {
+        color: red;
+    }
+
+    .star-rating {
+        font-size: 1.5em;
+        direction: ltr;
+        cursor: pointer;
+    }
+
+        .star-rating .star {
+            display: inline-block;
+            padding: 0 5px;
+            transition: color 0.2s;
+        }
+
+            .star-rating .star:hover, .star-rating .star.active {
+                color: gold;
+            }
+</style>
+
+<h2>Your Appointments</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>@Html.DisplayName("Patient Name")</th>
+            <th>@Html.DisplayName("Staff Allocated")</th>
+            <th>@Html.DisplayName("Date of Appointment")</th>
+            <th>@Html.DisplayName("Appointment Time")</th>
+            <th>@Html.DisplayName("Status")</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Appointment.FirstName @item.Appointment.LastName</td>
+                <td>@item.StaffName</td>
+                <td>@item.Appointment.DateOfAppointment</td>
+                <td>@Html.DisplayFor(modelItem => item.Appointment.TimeSlot)</td>
+                <td>@Html.DisplayFor(modelItem => item.Appointment.Status)</td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Appointment.AppointmentID }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.Appointment.AppointmentID }) |
+                    @if (item.Appointment.Status == "Imaging completed")
+                    {
+                        <a href="#" class="leaveFeedback" data-id="@item.Appointment.AppointmentID">Leave Feedback</a>
+                    }
+                    else
+                    {
+                        @Html.ActionLink("Cancel", "Delete", new { id = item.Appointment.AppointmentID }, new { @class = "cancel-link" });
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Feedback Modal -->
+<div class="modal fade" id="feedbackModal" tabindex="-1" role="dialog" aria-labelledby="feedbackModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="feedbackModalLabel">Leave Feedback</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="star-rating">
+                    <span class="star" data-rating="1">☆</span>
+                    <span class="star" data-rating="2">☆</span>
+                    <span class="star" data-rating="3">☆</span>
+                    <span class="star" data-rating="4">☆</span>
+                    <span class="star" data-rating="5">☆</span>
+                    <input type="hidden" id="selectedRating" value="0" />
+                </div>
+
+                <!-- Feedback Comment -->
+                <textarea id="feedbackComment" class="form-control mt-3" placeholder="Your comments..."></textarea>
+                <input type="hidden" id="appointmentId" value="" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" id="submitFeedback" class="btn btn-primary">Submit Feedback</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/Scripts/DataTables/jquery.dataTables.js")
+    @Scripts.Render("~/Scripts/DataTables/dataTables.bootstrap.js")
+
+    <script>
+        $(document).ready(function () {
+            $('.table').DataTable();
+
+            $(".star-rating .star").hover(function () {
+                var rating = $(this).data("rating");
+                $(".star-rating .star").each(function () {
+                    if ($(this).data("rating") <= rating) {
+                        $(this).addClass("active");
+                    } else {
+                        $(this).removeClass("active");
+                    }
+                });
+            }, function () {
+                $(".star-rating .star").removeClass("active");
+                var selectedRating = $("#selectedRating").val();
+                $(".star-rating .star").each(function () {
+                    if ($(this).data("rating") <= selectedRating) {
+                        $(this).addClass("active");
+                    }
+                });
+            });
+
+            $(".star-rating .star").click(function () {
+                var rating = $(this).data("rating");
+                $("#selectedRating").val(rating);
+                $(".star-rating .star").each(function () {
+                    if ($(this).data("rating") >= rating) {
+                        $(this).addClass("active");
+                    } else {
+                        $(this).removeClass("active");
+                    }
+                });
+            });
+
+            // When "Leave Feedback" link is clicked
+            $("a.leaveFeedback").click(function (e) {
+                e.preventDefault();
+
+                // Store appointment ID in hidden input
+                var appointmentId = $(this).data("id");
+                $("#appointmentId").val(appointmentId);
+
+                // Show modal
+                $("#feedbackModal").modal('show');
+            });
+
+            // When feedback is submitted
+            $("#submitFeedback").click(function () {
+                var rating = $('#selectedRating').val();
+                var comment = $("#feedbackComment").val();
+                var appointmentId = $("#appointmentId").val();
+
+                $.post('/Appointments/SaveFeedback', { appointmentId: appointmentId, rating: rating, comment: comment }, function (data) {
+                    // Handle response here
+                    if (data.success) {
+                        alert("Feedback submitted successfully!");
+                        $("#feedbackModal").modal('hide');
+                    } else {
+                        alert("Error submitting feedback. Please try again.");
+                    }
+                });
+            });
+        });
+    </script>
+
+}

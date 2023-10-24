@@ -1,0 +1,74 @@
+﻿@model IEnumerable<_5032project_v3.Models.AppointmentViewModel>
+
+@{
+    ViewBag.Title = "Manage Appointments";
+    Layout = "~/Views/Shared/_OperatorLayout.cshtml";
+}
+@if (TempData["EmailStatus"] != null)
+{
+    <script>
+        alert('@TempData["EmailStatus"]');
+    </script>
+}
+<style>
+    .cancel-link {
+        color: red;
+    }
+</style>
+
+<h2>Send Email to Appointments</h2>
+
+
+@using (Html.BeginForm("SendBulkEmails", "Appointments", FormMethod.Post))
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Select</th>
+                <th>@Html.DisplayName("Patient Name")</th>
+                <th>@Html.DisplayName("Staff Allocated")</th>
+                <th>@Html.DisplayName("Date of Appointment")</th>
+                <th>@Html.DisplayName("Appointment Time")</th>
+                <th>@Html.DisplayName("Status")</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <input type="checkbox" name="selectedAppointments" value="@item.Appointment.AppointmentID" />
+                    </td>
+                    <td>@item.Appointment.FirstName @item.Appointment.LastName</td>
+                    <td>
+                        @if (item.StaffName == null)
+                        {
+                            <text>Waiting for Allocate</text>
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(modelItem => item.StaffName)
+                        }
+                    </td>
+                    <td>@item.Appointment.DateOfAppointment</td>
+                    <td>@Html.DisplayFor(modelItem => item.Appointment.TimeSlot)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Appointment.Status)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <input type="submit" value="Send Emails to Selected" class="btn btn-primary" />
+}
+
+@section Scripts {
+    @Scripts.Render("~/Scripts/DataTables/jquery.dataTables.js")
+    @Scripts.Render("~/Scripts/DataTables/dataTables.bootstrap.js")
+    <script>
+        $(document).ready(function () {
+            $('.table').DataTable();
+        });
+    </script>
+}
+
+<link href="~/Content/DataTables/css/dataTables.bootstrap.min.css" rel="stylesheet" />

@@ -1,0 +1,24 @@
+﻿@model _5032project_v3.Models.SetNameViewModel
+
+@{
+    ViewBag.Title = "View";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Set Name</h2>
+@using (Html.BeginForm("SetName", "Manage", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div>
+        @Html.DisplayName("Your Firstname")
+        @Html.EditorFor(model => model.FirstName)
+    </div>
+    <div>
+        @Html.DisplayName("Your Lastname")
+        @Html.EditorFor(model => model.LastName)
+    </div>
+
+    <input type="submit" value="Set Name" />
+}
+

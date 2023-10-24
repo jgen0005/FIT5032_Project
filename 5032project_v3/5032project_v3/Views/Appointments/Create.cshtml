@@ -1,0 +1,92 @@
+﻿@model _5032project_v3.Models.Appointment
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Create</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Appointment</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DateOfAppointment, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.DateOfAppointment, new { @class = "form-control", id = "DateOfAppointment" })
+                @Html.ValidationMessageFor(model => model.DateOfAppointment, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group" id="timeSlotDiv" style="display: none;">
+            @Html.LabelFor(model => model.TimeSlot, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.TimeSlot, new SelectList(new List<string>()), "Select a Time Slot", new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.Description, new { @class = "form-control", rows = "4" })
+                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" id="createButton" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/additional-methods.min.js"></script>
+
+    <script>
+        $(function () {
+            $("#DateOfAppointment").datepicker({
+                dateFormat: 'dd/mm/yy',
+                minDate: 1,
+                onSelect: function (dateText, inst) {
+                    fetchAvailableTimeSlots(dateText);
+                }
+            });
+        });
+
+        function fetchAvailableTimeSlots(date) {
+            $.post('/Appointments/FetchTimeSlots', { DateOfAppointment: date }, function (data) {
+                var $dropdown = $("#TimeSlot");
+                $dropdown.empty();
+
+                if (data && data.length) {
+                    // Show the time slot input
+                    $("#timeSlotDiv").show();
+                    $.each(data, function (i, timeSlot) {
+                        $dropdown.append($("<option />").val(timeSlot).text(timeSlot));
+                    });
+                } else {
+                    // No available time slots, so hide the time slot input again
+                    $("#timeSlotDiv").hide();
+                }
+            });
+        }
+    </script>
+}

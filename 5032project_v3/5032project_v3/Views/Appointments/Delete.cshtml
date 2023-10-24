@@ -1,0 +1,87 @@
+﻿@model _5032project_v3.Models.Appointment
+
+@{
+    ViewBag.Title = "Cancel your appointment";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .btn-red {
+        background-color: red;
+        color: white;
+        border: none;
+    }
+</style>
+
+<h2>Cancel your appointment</h2>
+
+<h3>Are you sure you want to cancel this appointment?</h3>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayName("Patient Name")
+        </dt>
+
+        <dd>
+            @Model.FirstName @Model.LastName
+        </dd>
+
+        <dt>
+            @Html.DisplayName("Staff Allocated")
+        </dt>
+
+        <dd>
+            @if (Model.StaffID == null)
+            {
+                <text>waiting for allocate</text>
+            }
+            else
+            {
+                @Html.DisplayFor(modelItem => Model.StaffID)
+            }
+        </dd>
+
+        <dt>
+            @Html.DisplayName("Date of Appointment")
+        </dt>
+
+        <dd>
+            @Model.DateOfAppointment
+        </dd>
+
+        <dt>
+            @Html.DisplayName("Appointment Time")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TimeSlot)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default btn-red" onclick="return confirmCancellation();" />
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>
+
+<script>
+    function confirmCancellation() {
+        return confirm('Are you sure you want to cancel this appointment?');
+    }
+</script>
+

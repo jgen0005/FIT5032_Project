@@ -1,0 +1,59 @@
+﻿@model _5032project_v3.Models.XRayRecord
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>XRayRecord</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.AppointmentID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AppointmentID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.XRayImage)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.XRayImage)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateTaken)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateTaken)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Diagnosis)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Diagnosis)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.RecordID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

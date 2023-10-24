@@ -1,0 +1,75 @@
+﻿@{
+    ViewBag.Title = "IndexOperator";
+    Layout = "~/Views/Shared/_OperatorLayout.cshtml";
+}
+
+<h2>Upcoming Appointments</h2>
+
+<select id="timePeriodSelector">
+    <option value="month">This Month</option>
+    <option value="fortnight">This Fortnight</option>
+    <option value="week">This Week</option>
+</select>
+
+<canvas id="appointmentChart" width="400" height="200"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-moment@1.0.1/dist/chartjs-adapter-moment.min.js"></script>
+
+<script>
+    document.getElementById('timePeriodSelector').addEventListener('change', function () {
+        loadChartData(this.value);
+    });
+
+    function loadChartData(period) {
+        fetch(`/Appointments/GetDataForChart?period=${period}`)
+            .then(response => response.json())
+            .then(data => {
+                renderChart(data);
+            });
+    }
+
+    let chartInstance;
+
+    function renderChart(data) {
+        var ctx = document.getElementById('appointmentChart').getContext('2d');
+
+        if (chartInstance) {
+            chartInstance.destroy();
+        }
+
+        chartInstance = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: data.dates,
+                datasets: [{
+                    label: 'Appointments',
+                    data: data.counts,
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1,
+                    fill: false
+                }]
+            },
+            options: {
+                scales: {
+                    x: {
+                        type: 'time',
+                        time: {
+                            unit: 'day',
+                            parser: 'YYYY-MM-DD',
+                            displayFormats: {
+                                day: 'DD/MM/YYYY'
+                            }
+                        }
+                    },
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    }
+
+    loadChartData('month');
+</script>

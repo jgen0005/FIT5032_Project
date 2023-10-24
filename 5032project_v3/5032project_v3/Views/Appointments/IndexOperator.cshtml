@@ -1,0 +1,98 @@
+﻿@model IEnumerable<_5032project_v3.Models.AppointmentViewModel>
+
+@{
+    ViewBag.Title = "Manage Appointments";
+    Layout = "~/Views/Shared/_OperatorLayout.cshtml";
+}
+<style>
+    .cancel-link {
+        color: red;
+    }
+</style>
+
+<h2>Manage Appointments</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayName("Patient Name")
+            </th>
+            <th>
+                @Html.DisplayName("Staff Allocated")
+            </th>
+            <th>
+                @Html.DisplayName("Date of Appointment")
+            </th>
+            <th>
+                @Html.DisplayName("Appointment Time")
+            </th>
+            <th>
+                @Html.DisplayName("Status")
+            </th>
+            @*<th>
+                    @Html.DisplayNameFor(model => model.FeedbackRating)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FeedbackComment)
+                </th>*@
+            <th>Actions</th>
+        </tr>
+        </thread>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.Appointment.FirstName @item.Appointment.LastName
+                </td>
+                <td>
+                    @if (item.StaffName == null)
+                    {
+                        <text>Waiting for Allocate</text>
+                    }
+                    else
+                    {
+                        @Html.DisplayFor(modelItem => item.StaffName)
+                    }
+                </td>
+                <td>
+                    @item.Appointment.DateOfAppointment
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Appointment.TimeSlot)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Appointment.Status)
+                </td>
+                @*<td>
+                        @Html.DisplayFor(modelItem => item.FeedbackRating)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FeedbackComment)
+                    </td>*@
+                <td>
+                    @Html.ActionLink("Edit", "EditOperator", new { id = item.Appointment.AppointmentID }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.Appointment.AppointmentID }) |
+                    @Html.ActionLink("Cancel", "Delete", new { id = item.Appointment.AppointmentID }, new { @class = "cancel-link" })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+
+    @Scripts.Render("~/Scripts/DataTables/jquery.dataTables.js")
+    @Scripts.Render("~/Scripts/DataTables/dataTables.bootstrap.js")
+    <script>
+        $(document).ready(function () {
+            $('.table').DataTable();
+        });
+    </script>
+}
+<link href="~/Content/DataTables/css/dataTables.bootstrap.min.css"
+      rel="stylesheet" />

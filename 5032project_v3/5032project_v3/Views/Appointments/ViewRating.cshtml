@@ -1,0 +1,56 @@
+﻿@model IEnumerable<_5032project_v3.Models.AppointmentViewModel>
+
+@{
+    ViewBag.Title = "Ratings of Appointments";
+    Layout = "~/Views/Shared/_OperatorLayout.cshtml";
+}
+<style>
+    .cancel-link {
+        color: red;
+    }
+</style>
+
+<h2>Manage Appointments</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>@Html.DisplayName("Patient Name")</th>
+            <th>@Html.DisplayName("Date of Appointment")</th>
+            <th>@Html.DisplayName("Appointment Time")</th>
+            <th>@Html.DisplayName("Feedback rating")</th>
+            <th>@Html.DisplayName("Feedback Comment")</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            if (item.Appointment.FeedbackRating != null)
+            {
+                <tr>
+                    <td>@item.Appointment.FirstName @item.Appointment.LastName</td>
+                    <td>@item.Appointment.DateOfAppointment</td>
+                    <td>@Html.DisplayFor(modelItem => item.Appointment.TimeSlot)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Appointment.FeedbackRating)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Appointment.FeedbackComment)</td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+
+    @Scripts.Render("~/Scripts/DataTables/jquery.dataTables.js")
+    @Scripts.Render("~/Scripts/DataTables/dataTables.bootstrap.js")
+    <script>
+        $(document).ready(function () {
+            $('.table').DataTable();
+        });
+    </script>
+}
+<link href="~/Content/DataTables/css/dataTables.bootstrap.min.css" rel="stylesheet" />

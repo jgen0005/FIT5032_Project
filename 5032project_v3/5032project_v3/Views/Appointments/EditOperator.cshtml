@@ -1,0 +1,151 @@
+﻿@model _5032project_v3.Models.Appointment
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_OperatorLayout.cshtml";
+}
+
+<h2>Edit</h2>
+<style>
+    .right-side-form {
+        float: right;
+        width: 50%; /* Adjust as needed */
+    }
+</style>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    <h4>Appointment</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.AppointmentID)
+    @Html.HiddenFor(model=>model.PatientID)
+
+<div class="row">
+
+    <!-- Left Column -->
+    <div class="col-md-6">
+        <div class="form-group">
+            <label class="control-label col-md-6">First Name:</label>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <br>
+
+        <div class="form-group">
+            <label class="control-label col-md-6">Last Name:</label>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <br>
+
+        <div class="form-group">
+            <label class="control-label col-md-6">Staff Allocated:</label>
+            <div class="col-md-10">
+                @if (ViewBag.StaffList != null)
+                {
+                    @Html.DropDownList("StaffID", (SelectList)ViewBag.StaffList, "-- Select Staff --", new { @class = "form-control" })
+                }
+                else
+                {
+                    <p>No staff data available.</p>
+                }
+                @Html.ValidationMessageFor(model => model.StaffID, "", new { @class = "text-danger" })
+
+            </div>
+        </div>
+
+        <br>
+
+        <div class="form-group">
+            <label class="control-label col-md-6">Date of Appointment:</label>
+            <div class="col-md-10">
+                @Model.DateOfAppointment
+                @Html.HiddenFor(model => model.DateOfAppointment) <!-- This line preserves the original date -->
+            </div>
+        </div>
+        <br>
+
+        <div class="form-group">
+            <label class="control-label col-md-6">Appointment Time:</label>
+            <div class="col-md-10">
+                @Html.DisplayFor(model => model.TimeSlot, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.HiddenFor(model => model.TimeSlot)
+            </div>
+        </div>
+        <br>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.Status, new List<SelectListItem>
+                {
+                    new SelectListItem { Text = "Pending", Value = "Pending" },
+                    new SelectListItem { Text = "Confirmed", Value = "Confirmed" },
+                    new SelectListItem { Text = "Waiting for imaging", Value = "Waiting for imaging" },
+                    new SelectListItem { Text = "Imaging completed", Value = "Imaging completed" },
+                }, "-- Select Status --", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <br>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.Description, new { @class = "form-control", rows = "4" })
+                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <br>
+        <hr>
+        <!-- XRay Attachment Section -->
+        <div class="form-group">
+            <h4>X-Ray Attachment:</h4>
+        </div>
+        <br>
+        <div class="form-group">
+            <div class="col-md-10">
+                @if (ViewBag.XRayRecords != null && ViewBag.XRayRecords.Count > 0)
+                {
+                    <ul>
+                        @foreach (var record in ViewBag.XRayRecords)
+                        {
+                            <li>
+                                - Diagnosis: @record.Diagnosis | <a href="@Url.Content(record.FilePath)" target="_blank">View X-Ray Attachment</a>
+                            </li>
+                        }
+                    </ul>
+                }
+                @Html.ActionLink("Add Attachment", "Create", "XRayRecords", new { id = Model.AppointmentID }, new { @class = "btn btn-secondary" })
+            </div>
+        </div>
+        <br>
+    </div>
+
+    <br>
+</div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Save" class="btn btn-primary" />
+        </div>
+    </div>
+</div>
+<br>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -13,7 +13,7 @@ namespace project_v2.Controllers
 {
     public class AppointmentsController : Controller
     {
-        private Model1 db = new Model1();
+        private AppointmentModel db = new AppointmentModel();
 
         // GET: Appointments
         public ActionResult Index()
@@ -37,7 +37,6 @@ namespace project_v2.Controllers
         }
 
         // GET: Appointments/Create
-        [Authorize]
         public ActionResult Create()
         {
             return View();
@@ -108,6 +107,7 @@ namespace project_v2.Controllers
             return View(appointment);
         }
 
+        [Authorize]
         // POST: Appointments/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]

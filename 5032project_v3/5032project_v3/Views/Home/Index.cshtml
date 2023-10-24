@@ -1,0 +1,126 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<html>
+<head>
+    <title>W3.CSS Template</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css">
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
+</head>
+
+<!-- Header -->
+<header class="w3-display-container w3-content w3-wide" style="max-width:1500px;" id="home">
+    <img class="w3-image" src="../imgs/xray.jpg" alt="xray" width="1500" height="400">
+    <div class="w3-display-middle w3-margin-top w3-center">
+        <h1 class="w3-xxlarge w3-text-white"><span class="w3-padding w3-black w3-opacity-min"><b>X-Ray</b></span> <span class="w3-hide-small w3-text-light-grey">Mission Central</span></h1>
+    </div>
+</header>
+
+<!-- Page content -->
+<div class="w3-content w3-padding" style="max-width:1564px">
+
+    <!-- Project Section -->
+    <div class="w3-container w3-padding-32" id="projects">
+        <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">Actions</h3>
+    </div>
+
+    <div class="w3-row-padding">
+        <div class="w3-col l3 m6 w3-margin-bottom">
+            <a href="~/Account/Register">
+                <div class="w3-display-container">
+                    <div class="w3-display-topleft w3-black w3-padding">Sign Up</div>
+                    <img src="~/imgs/register.jpg" alt="Sign Up" style="width:100%">
+                </div>
+            </a>
+        </div>
+        <div class="w3-col l3 m6 w3-margin-bottom">
+            <a href="~/Appointments/Create">
+                <div class="w3-display-container">
+                    <div class="w3-display-topleft w3-black w3-padding">Make an Appointment</div>
+                    <img src="~/imgs/appointment.jpg" alt="Make an Appointment" style="width:100%">
+                </div>
+            </a>
+        </div>
+        <div class="w3-col l3 m6 w3-margin-bottom">
+            <a href="~/Appointments/Index">
+                <div class="w3-display-container">
+                    <div class="w3-display-topleft w3-black w3-padding">Manage Appointments</div>
+                    <img src="~/imgs/record.jpg" alt="View My X-Ray Record" style="width:100%">
+                </div>
+            </a>
+        </div>
+        <div class="w3-col l3 m6 w3-margin-bottom">
+            <a href="~/Appointments/Index">
+                <div class="w3-display-container">
+                    <div class="w3-display-topleft w3-black w3-padding">Leave a Feedback</div>
+                    <img src="~/imgs/feedback.jpg" alt="Leave a Feedback" style="width:100%">
+                </div>
+            </a>
+        </div>
+
+    </div>
+
+    <!-- About Section -->
+    <div class="w3-container w3-padding-32" id="about">
+        <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">About</h3>
+        <p>
+            X-Rays Mission Central is An advanced platform meticulously crafted for X-ray services,
+            aiding users in diagnosing various ailments via X-ray examinations. Users can conveniently
+            schedule their X-ray appointments, manage their calendars, and leave valuable feedback. For
+            the staff, the platform facilitates efficient user management, enabling features like bulk
+            emailing, as well as the export of patient histories, completed examinations, and related
+            reports.
+        </p>
+    </div>
+
+    <!-- Map Section -->
+    <div class="w3-container w3-padding-32" id="location">
+        <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">Our Location</h3>
+        <div id="map" style="height:400px;"></div>
+    </div>
+
+
+
+    <!-- End page content -->
+</div>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css" />
+<script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
+<script>
+    var map = L.map('map').setView([-37.8136, 144.9631], 13); // Default to Melbourne, Victoria
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+    // User's location
+    map.locate({ setView: true, maxZoom: 16 });
+
+    function onLocationFound(e) {
+        L.marker(e.latlng).addTo(map).bindPopup("You are here! <br><a href='" + generateGoogleMapsLink(e.latlng.lat, e.latlng.lng) + "' target='_blank'>Navigate to Clinic</a>").openPopup();
+        L.Routing.control({
+            waypoints: [
+                L.latLng(e.latlng.lat, e.latlng.lng),     // User's location
+                L.latLng(-37.814, 144.963)                // Clinic location
+            ],
+            routeWhileDragging: true,
+            geocoder: L.Control.Geocoder.nominatim(),
+            router: L.Routing.openrouteservice('YOUR_OPENROUTESERVICE_API_KEY')
+        }).addTo(map);
+    }
+
+    function generateGoogleMapsLink(lat, lng) {
+        return "https://www.google.com/maps/dir/?api=1&origin=" + lat + "," + lng + "&destination=-37.814,144.963&travelmode=driving";
+    }
+
+    map.on('locationfound', onLocationFound);
+
+    // Clinic Location
+    L.marker([-37.814, 144.963]).addTo(map).bindPopup("X-Ray Mission Central Clinic").openPopup();
+
+</script>
+
+
